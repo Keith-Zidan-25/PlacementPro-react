@@ -1,3 +1,7 @@
 export default function Authentication() {
-    return (<></>);
+    return (
+        <>
+            
+        </>
+    );
 }
