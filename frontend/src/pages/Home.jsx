@@ -28,7 +28,7 @@ export default function Home() {
     return (
         <>
             <header className="bg-black py-5 fixed w-full top-0 z-50 shadow-md">
-                <Navbar linkList={linkList} />
+                <Navbar linkList={linkList} className={'text-white'}/>
             </header>
 
             <section id="Home" className="h-screen flex items-center justify-center text-center relative text-white bg-cover bg-center"

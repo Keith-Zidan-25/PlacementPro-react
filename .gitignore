@@ -1,1 +1,4 @@
 old_pages
+backend/node_modules
+*.sql
+.vscode
