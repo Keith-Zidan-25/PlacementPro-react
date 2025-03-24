@@ -2,9 +2,10 @@ import { lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-const Home = lazy(() => import('./pages/Home'))
-const Authentication = lazy(() => import('./pages/Authentication'))
-const Profile = lazy(() => import('./pages/Profile'))
+const Home = lazy(() => import('./pages/Home'));
+const Authentication = lazy(() => import('./pages/Authentication'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Course = lazy(() => import('./pages/Course'));
 
 function App() {
     return (
@@ -15,8 +16,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login-register" element={<Authentication />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/" element={<Home />} />
+                    <Route path="/user/profile/:username" element={<Profile />} />
+                    <Route path="/courses" element={<Course />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/" element={<Home />} />
                 </Routes>
@@ -25,4 +26,4 @@ function App() {
     )
 }
 
-export default App
+export default App;

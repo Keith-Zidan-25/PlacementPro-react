@@ -56,11 +56,13 @@ export const Title = styled.h1`
 `;
  
 export const Input = styled.input`
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 8px 10px;
     margin: 8px 0;
     width: 100%;
+    text-align: left;
 `;
  
 
