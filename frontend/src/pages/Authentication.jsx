@@ -3,18 +3,20 @@ import Swal from "sweetalert2";
 import { z, ZodError } from "zod";
 import React, { useState } from "react";
 import p2 from '../assets/images/p1.png';
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Components from '../components/Components';
 import LoadingScreen from "../components/LoadingScreen";
 
+axios.defaults.withCredentials = true;
+
 const signUpSchema = z.object({
-    name: z.string().min(1, "Username can't be empty"),
+    username: z.string().min(1, "Username can't be empty"),
     email: z.string().min(1, "Email can't be empty").email("Invalid email format"),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 const signInSchema = z.object({
-    email: z.string().min(1, "Email can't be empty").email("Invalid email format"),
+    username: z.string().min(1, "Username can't be empty"),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -27,6 +29,7 @@ export default function App() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [verify, setVerifyStatus] = useState(false);
+    const navigate = useNavigate();
 
     const handleSignUp = async (event) => {
         event.preventDefault();
@@ -34,7 +37,7 @@ export default function App() {
 
         const formData = new FormData(event.target);
         const data = {
-            name: formData.get('name'),
+            username: formData.get('name'),
             email: formData.get('email'),
             password: formData.get('password'),
         };
@@ -73,7 +76,7 @@ export default function App() {
 
         const formData = new FormData(event.target);
         const data = {
-            email: formData.get('email'),
+            username: formData.get('name'),
             password: formData.get('password'),
         };
 
@@ -84,7 +87,7 @@ export default function App() {
             const response = await axios.post('http://localhost:5000/api/auth/signin', data);
 
             if (response.status === 200) {
-                redirect( response.data.redirect, 200);
+                navigate(response.data.redirect);
             } else {
                 setLoading(false);
                 Swal.fire('Some Error Occurred', response.data.error, 'error');
@@ -122,9 +125,12 @@ export default function App() {
             if (response.status === 200) {
                 Swal.fire(response.data.success, 'Welcome to PlacementPro!!', 'success')
                     .then(() => {
-                        redirect(response.data.redirect, 200);
+                        navigate(response.data.redirect);
                     })
                     .catch(() => setLoading(false));
+            } else {
+                setLoading(false);
+                Swal.fire('An Error Occured', response.data.error, 'error');
             }
         } catch (err) {
             if (err instanceof ZodError) {
@@ -174,8 +180,8 @@ export default function App() {
                                 <Components.SignInContainer signinIn={signIn}>
                                     <Components.Form onSubmit={handleSignIn}>
                                         <Components.Title>Sign in</Components.Title>
-                                        <Components.Input type="email" name="email" placeholder="Email" />
-                                        {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
+                                        <Components.Input type="text" name="name" placeholder="Name" />
+                                        {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
 
                                         <Components.Input type="password" name="password" placeholder="Password" />
                                         {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}

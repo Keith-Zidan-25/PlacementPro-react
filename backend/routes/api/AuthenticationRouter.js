@@ -60,7 +60,7 @@ authRouter.post('/signin', async (req, res) => {
         if (!userData) {
             return res.status(404).json({ error: 'User Not Found' });
         }
-        const flag = await argon2.verify(password, userData.PASSWORD);
+        const flag = await argon2.verify(userData.PASSWORD, password);
         
         if (flag) {
             req.session.user = userData.USERKEY;

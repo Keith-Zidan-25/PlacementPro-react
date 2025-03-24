@@ -20,9 +20,7 @@ app.use(session({
     resave: false,
     cookie: { maxAge: 3600000 }
 }));
-
 app.use((req, res, next) => {
-    console.log(req.session);
     next();
 });
 

@@ -6,6 +6,8 @@ import { Overview } from "../components/User";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export default function Profile() {
     const [ userData, setUserData ] = useState({});
     const [ component, setComponent ] = useState(null);
@@ -17,7 +19,7 @@ export default function Profile() {
         const fetchUserData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5050/user/profile/${username}`);
+                const response = await axios.get(`http://localhost:5000/user/profile/${username}`);
 
                 if (response.status === 200) {
                     setUserData(response.data);
@@ -50,7 +52,7 @@ export default function Profile() {
                     <Navbar linkList={linkList} className={'text-white'}/>
                 </header>
                 <div className="flex bg-white">
-                    <Sidebar setComponent={(component) => setComponent(() => component)} userData={userData}/>
+                    <Sidebar setComponent={setComponent} userData={userData}/>
                     <main className="p-10 bg-white flex-1 ml-64">
                         {component || <Overview userData={userData.user} />} 
                     </main>

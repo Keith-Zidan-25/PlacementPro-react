@@ -2,9 +2,9 @@ const express = require('express');
 const dbUser = require('../Queries/UserQuery');
 const userRouter = express.Router();
 
-userRouter.get('/user/profile/:username', async (req, res) => {
+userRouter.get('/profile/:username', async (req, res) => {
     const { username } = req.params;
-    const userKey = await db.getUserKey(username);
+    const userKey = await dbUser.getUserKey(username);
 
     if (!req.session.user || req.session.user !== userKey.USERKEY) {
         return res.status(403).json({error: 'Unauthorized access' });
