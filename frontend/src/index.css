@@ -51,6 +51,60 @@
         }
     }
 
+    @keyframes bar-1 {
+        0%, 40% {
+            transform: scaleY(0.2);
+        }
+        50%, 90% {
+            transform: scaleY(1);
+        }
+        100% {
+            transform: scaleY(0.2);
+        }
+    }
+
+    @keyframes bar-2 {
+        0%, 40% {
+            transform: scaleY(0.4);
+        }
+        50%, 90% {
+            transform: scaleY(0.8);
+        }
+        100% {
+            transform: scaleY(0.4);
+        }
+    }
+
+    @keyframes bar-3 {
+        0%, 100% {
+            transform: scaleY(0.6);
+        }
+    }
+
+    @keyframes bar-4 {
+        0%, 40% {
+            transform: scaleY(0.8);
+        }
+        50%, 90% {
+            transform: scaleY(0.4);
+        }
+        100% {
+            transform: scaleY(0.8);
+        }
+    }
+
+    @keyframes bar-5 {
+        0%, 40% {
+            transform: scaleY(1);
+        }
+        50%, 90% {
+            transform: scaleY(0.2);
+        }
+        100% {
+            transform: scaleY(1);
+        }
+    }
+
     @keyframes ball {
         0% {
             transform: translate(0, 0);
@@ -111,85 +165,27 @@
         }
     }
 
-    @keyframes barUp1 {
-        0% {
-            transform: scale(1, .2);
-        }
-        40% {
-            transform: scale(1, .2);
-        }
-        50% {
-            transform: scale(1, 1);
-        }
-        90% {
-            transform: scale(1, 1);
-        }
-        100% {
-            transform: scale(1, .2);
-        }
+    .animate-bar-1 {
+        animation: bar-1 4s ease-in-out infinite;
     }
 
-    @keyframes barUp2 {
-        0% {
-            transform: scale(1, .4);
-        }
-        40% {
-            transform: scale(1, .4);
-        }
-        50% {
-            transform: scale(1, .8);
-        }
-        90% {
-            transform: scale(1, .8);
-        }
-        100% {
-            transform: scale(1, .4);
-        }
+    .animate-bar-2 {
+        animation: bar-2 4s ease-in-out infinite;
     }
 
-    @keyframes barUp3 {
-        0% {
-            transform: scale(1, .6);
-        }
-        100% {
-            transform: scale(1, .6);
-        }
+    .animate-bar-3 {
+        animation: bar-3 4s ease-in-out infinite;
     }
 
-    @keyframes barUp4 {
-        0% {
-            transform: scale(1, .8);
-        }
-        40% {
-            transform: scale(1, .8);
-        }
-        50% {
-            transform: scale(1, .4);
-        }
-        90% {
-            transform: scale(1, .4);
-        }
-        100% {
-            transform: scale(1, .8);
-        }
+    .animate-bar-4 {
+        animation: bar-4 4s ease-in-out infinite;
     }
 
-    @keyframes barUp5 {
-        0% {
-            transform: scale(1, 1);
-        }
-        40% {
-            transform: scale(1, 1);
-        }
-        50% {
-            transform: scale(1, .2);
-        }
-        90% {
-            transform: scale(1, .2);
-        }
-        100% {
-            transform: scale(1, 1);
-        }
-    }  
+    .animate-bar-5 {
+        animation: bar-5 4s ease-in-out infinite;
+    }
+
+    .animate-ball {
+        animation: ball 4s ease-in-out infinite;
+    }
 }
-  

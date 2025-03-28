@@ -1,20 +1,29 @@
-import Home from "./pages/Home";
-import Authentication from "./pages/Authentication";
+import { lazy, Suspense } from "react";
+import LoadingScreen from "./components/LoadingScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+const Home = lazy(() => import('./pages/Home'));
+const Authentication = lazy(() => import('./pages/Authentication'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Course = lazy(() => import('./pages/Course'));
 
 function App() {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login_register" element={<Authentication />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/" element={<Home />} />
-            </Routes>
+            <Suspense fallback={<div className="min-h-screen w-screen absolute inset-0 flex items-center justify-center bg-purple-700 z-20">
+                                <LoadingScreen />
+                            </div>}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login-register" element={<Authentication />} />
+                    <Route path="/user/profile/:username" element={<Profile />} />
+                    <Route path="/courses" element={<Course />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </Suspense>
         </BrowserRouter>
     )
 }
 
-export default App
+export default App;

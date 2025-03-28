@@ -1,1 +1,13 @@
+#temp folders
 old_pages
+
+#global files
+*.sql
+.vscode
+*.env
+
+#backend stuff
+backend/node_modules
+backend/sessions
+#unused files
+script.txt
