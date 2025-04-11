@@ -6,6 +6,8 @@ const Home = lazy(() => import('./pages/Home'));
 const Authentication = lazy(() => import('./pages/Authentication'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Course = lazy(() => import('./pages/Course'));
+const ResumeHome = lazy(() => import('./pages/ResumeHome'));
+const ResumeBuilder = lazy(() => import("./pages/ResumeBuilder"));
 
 function App() {
     return (
@@ -18,8 +20,9 @@ function App() {
                     <Route path="/login-register" element={<Authentication />} />
                     <Route path="/user/profile/:username" element={<Profile />} />
                     <Route path="/courses" element={<Course />} />
-                    <Route path="/" element={<Home />} />
-                    <Route path="/" element={<Home />} />
+                    <Route path="/resume" element={<ResumeHome />} />
+                    <Route path="/aptitude-tests" element={<Home />} />
+                    <Route path="/create-resume/:title" element={<ResumeBuilder />}/>
                 </Routes>
             </Suspense>
         </BrowserRouter>

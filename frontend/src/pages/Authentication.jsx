@@ -46,7 +46,7 @@ export default function App() {
             signUpSchema.parse(data);
             setErrors({});
 
-            const response = await axios.post('http://localhost:5000/api/auth/signup', data);
+            const response = await axios.post('http://localhost:3020/api/auth/signup', data);
 
             if (response.status === 200) {
                 setLoading(false);
@@ -84,7 +84,7 @@ export default function App() {
             signInSchema.parse(data);
             setErrors({});
 
-            const response = await axios.post('http://localhost:5000/api/auth/signin', data);
+            const response = await axios.post('http://localhost:3020/api/auth/signin', data);
 
             if (response.status === 200) {
                 navigate(response.data.redirect);
@@ -120,7 +120,7 @@ export default function App() {
             codeSchema.parse(codeData);
             setErrors({});
     
-            const response = await axios.post('http://localhost:5000/api/auth/verify', codeData);
+            const response = await axios.post('http://localhost:3020/api/auth/verify', codeData);
     
             if (response.status === 200) {
                 Swal.fire(response.data.success, 'Welcome to PlacementPro!!', 'success')
