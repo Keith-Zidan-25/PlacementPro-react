@@ -60,10 +60,16 @@
 <body>
     <div class="container">
         <table>
-            <tr style="border-bottom: 4px solid black">
-                <td><div style="font-size: 26pt; font-weight: bold;"><%= name || '' %></div></td>
-                <td class="body-text"><div><p><%= contact || '' %></p></div></td>
-            </tr>
+            <% if (name || contact) { %>
+                <tr style="border-bottom: 4px solid black">
+                    <% if (name) { %>
+                        <td><div style="font-size: 26pt; font-weight: bold;"><%= name || '' %></div></td>
+                    <% } %>
+                    <% if (contact) { %>
+                        <td class="body-text"><div><p><%= contact.phone || '' %> | <%= contact.email || '' %><% if (contact.website) { %> | <%= contact.website || '' %><% } %> </p></div></td>
+                    <% } %>
+                </tr>
+            <% } %>
             <% if (summary) { %>
                 <tr>
                     <td class="title-line"><div>Summary</div></td>

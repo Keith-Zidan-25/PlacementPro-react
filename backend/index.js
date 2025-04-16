@@ -16,7 +16,7 @@ app.use(cors({
 app.use(session({
     store: new FileStorage({ path: './sessions' }),
     secret: process.env.SECRET_KEY,
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 3600000 }
 }));

@@ -1,47 +1,78 @@
-import React from 'react';
+import React, { useState } from "react";
+import { Button, Input, TextArea } from "./Components";
 
-export default function ResumeForm({ fields, formData, setFormData }) {
+export default function MultiStepResumeForm({ fields, formData, setFormData, stepGroups, handleDownload }) {
+    const [step, setStep] = useState(0);
+
     const updateField = (key, value) => {
-        setFormData(prev => ({ ...prev, [key]: value }));
+        setFormData((prev) => ({ ...prev, [key]: value }));
     };
 
     const renderField = (key, field) => {
-        if (field.type === 'text') return (
-            <input className="border p-2 w-full" type="text" placeholder={field.label} value={formData[key] || ''} onChange={e => updateField(key, e.target.value)} />
-        );
+        const value = formData[key];
 
-        if (field.type === 'textarea') return (
-            <textarea className="border p-2 w-full" placeholder={field.label} value={formData[key] || ''} onChange={e => updateField(key, e.target.value)} />
-        );
-
-        if (field.type === 'list') {
-            const items = formData[key] || [];
+        if (field.type === "text" || field.type === "email") {
             return (
-                <div>
-                    <label>{field.label}</label>
-                    {items.map((item, i) => (
-                        <input key={i} className="border p-1 w-full" value={item} onChange={e => {
-                            const updated = [...items];
-                            updated[i] = e.target.value;
-                            updateField(key, updated);
-                            }} />
-                    ))}
-                    <button type="button" onClick={() => updateField(key, [...items, ''])}>+ Add</button>
+                <div key={key} className="my-2">
+                    <label className="font-semibold">{field.label}</label>
+                    <Input
+                        type={field.type}
+                        placeholder={field.label}
+                        value={value || ""}
+                        onChange={(e) => updateField(key, e.target.value)}
+                    />
                 </div>
             );
         }
 
-        if (field.type === 'array') {
-            const arr = formData[key] || [];
+        if (field.type === "textarea") {
             return (
-                <div>
-                    <label>{field.label}</label>
-                    {arr.map((entry, idx) => (
-                        <div key={idx} className="border p-2">
+                <div key={key} className="my-2">
+                    <label className="font-semibold">{field.label}</label>
+                    <TextArea
+                        placeholder={field.label}
+                        value={value || ""}
+                        onChange={(e) => updateField(key, e.target.value)}
+                    />
+                </div>
+            );
+        }
+
+        if (field.type === "list") {
+            return (
+                <div key={key} className="my-2">
+                    <label className="font-semibold">{field.label}</label>
+                    {(value || []).map((item, i) => (
+                        <Input
+                            key={i}
+                            placeholder={`${field.label} ${i + 1}`}
+                            value={item}
+                            onChange={(e) => {
+                                const updated = [...value];
+                                updated[i] = e.target.value;
+                                updateField(key, updated);
+                            }}
+                        />
+                    ))}
+                    <br></br>
+                    <Button type="Button" onClick={() => updateField(key, [...(value || []), ""])}> + Add</Button>
+                </div>
+            );
+        }
+
+        if (field.type === "array") {
+            return (
+                <div key={key} className="my-2">
+                    <label className="font-semibold">{field.label}</label>
+                    {(value || []).map((entry, idx) => (
+                        <div key={idx}>
                             {Object.entries(field.fields).map(([k, f]) => (
-                                <input key={k} className="border p-1 w-full" placeholder={f.label || k} value={entry[k] || ''}
-                                    onChange={e => {
-                                        const copy = [...arr];
+                                <Input
+                                    key={k}
+                                    placeholder={f.label || k}
+                                    value={entry[k] || ""}
+                                    onChange={(e) => {
+                                        const copy = [...value];
                                         copy[idx] = { ...copy[idx], [k]: e.target.value };
                                         updateField(key, copy);
                                     }}
@@ -49,18 +80,56 @@ export default function ResumeForm({ fields, formData, setFormData }) {
                             ))}
                         </div>
                     ))}
-                    <button type="button" onClick={() => updateField(key, [...arr, {}])}>+ Add Entry</button>
+                    <br></br>
+                    <Button onClick={() => updateField(key, [...(value || []), {}])}>
+                        + Add Entry
+                    </Button>
                 </div>
             );
         }
+
+        if (field.type === "object") {
+            return (
+                <div key={key} className="my-2">
+                    <label className="font-semibold">{field.label}</label>
+                    {Object.entries(field.fields).map(([k, f]) => (
+                        <Input
+                            key={k}
+                            placeholder={f.label}
+                            value={value?.[k] || ""}
+                            onChange={(e) => {
+                                updateField(key, { ...(value || {}), [k]: e.target.value });
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
         return null;
     };
 
+    const currentGroup = stepGroups[step];
+    const canGoNext = step < stepGroups.length - 1;
+    const canGoPrev = step > 0;
+
     return (
-        <form className="space-y-4">
-            {Object.entries(fields).map(([key, field]) => (
-                <div key={key}>{renderField(key, field)}</div>
-            ))}
-        </form>
+        <div className="space-y-4">
+            {currentGroup.map((key) => renderField(key, fields[key]))}
+
+            <div className="flex justify-between mt-4">
+                {canGoPrev && (
+                    <Button onClick={() => setStep((prev) => prev - 1)}>Back</Button>
+                    )}
+                    {canGoNext ? (
+                    <Button onClick={() => setStep((prev) => prev + 1)}>Next</Button>
+                    ) : (
+                    <Button onClick={handleDownload}>Download PDF</Button>
+                )}
+            </div>
+            <div className="mt-2 text-sm text-gray-600">
+                Step {step + 1} of {stepGroups.length}
+            </div>
+        </div>
     );
 }

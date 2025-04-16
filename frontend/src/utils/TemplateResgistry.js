@@ -3,7 +3,13 @@ export const templateRegistry = {
         label: 'Classic Resume',
         fields: {
             name: { type: 'text', label: 'Full Name' },
-            contact: { type: 'text', label: 'Contact Info' },
+            contact: { 
+                type: 'object', label: 'Contact Info', fields: {
+                    phone: { type: 'text', label: 'Mobile No.' },
+                    email: { type: 'email', label: 'Email' },
+                    website: { type: 'text', label: 'Any website profile' }
+                }
+            },
             summary: { type: 'textarea', label: 'Summary' },
             workExperience: {
                 type: 'array', label: 'Work Experience', fields: {
@@ -13,6 +19,13 @@ export const templateRegistry = {
                 }
             },
             skills: { type: 'list', label: 'Skills' },
+            projects: {
+                type: 'array', label: 'Project', fields: {
+                    title: { type: 'text', label: 'Project Title'},
+                    date: { type: 'text', label: 'Duration' },
+                    desc: { type: 'list', label: 'Details' }
+                }
+            },
             education: {
                 type: 'array', label: 'Education', fields: {
                     title: { type: 'text' },
@@ -20,14 +33,25 @@ export const templateRegistry = {
                 }
             },
             achievements: { type: 'list', label: 'Achievements' }
-        }
+        },
+        stepGroups: [
+            ['name', 'contact', 'summary'],
+            ['workExperience'],
+            ['projects'],
+            ['skills', 'education'],
+            ['achievements']
+        ]        
     },
 };
 
 export const templateEmptyFormRegistry = {
     'Classic Simplistic.ejs': {
         name: "",
-        contact: "",
+        contact: {
+            phone: null,
+            email: null,
+            website: null,
+        },
         summary: "",
         workExperience: [
             {
@@ -36,7 +60,9 @@ export const templateEmptyFormRegistry = {
                 desc: []
             },
         ],
-        projects: [],
+        projects: [
+            { title: "", date: "", desc: []}
+        ],
         skills: [],
         education: [
             { title: "", date: "" },

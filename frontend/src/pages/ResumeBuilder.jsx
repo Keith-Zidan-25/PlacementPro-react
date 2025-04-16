@@ -3,6 +3,7 @@ import axios from 'axios';
 import ResumeForm from '../components/ResumeForm';
 import { templateRegistry, templateEmptyFormRegistry } from '../utils/TemplateResgistry';
 import { useParams } from 'react-router-dom';
+import { Button } from '../components/Components';
 
 export default function ResumeBuilder() {
     let { title } = useParams()
@@ -41,12 +42,12 @@ export default function ResumeBuilder() {
     };
   
     const fields = templateRegistry[templateKey].fields;
+    const stepGroup = templateRegistry[templateKey].stepGroups
   
     return (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 ml-2 mr-2">
             <div className="p-4 border-r">
-                <ResumeForm fields={fields} formData={formData} setFormData={setFormData} />
-                <button onClick={handleDownload} className="mt-4 bg-purple-600 text-white px-4 py-2 rounded">Download PDF</button>
+                <ResumeForm fields={fields} formData={formData} setFormData={setFormData} stepGroups={stepGroup} handleDownload={handleDownload}/>
             </div>
             <div className="p-4">
                 <iframe srcDoc={previewHtml} className="w-full h-[80vh] border rounded"></iframe>
