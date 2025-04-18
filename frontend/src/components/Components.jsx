@@ -64,7 +64,16 @@ export const Input = styled.input`
     width: 100%;
     text-align: left;
 `;
- 
+
+export const TextArea = styled.textarea`
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin: 8px 0;
+    width: 100%;
+    text-align: left;
+`;
 
 export const Button = styled.button`
     border-radius: 20px;

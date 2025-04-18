@@ -1,0 +1,13 @@
+flask
+flask-cors
+flask-session
+requests
+pandas
+numpy
+matplotlib
+seaborn
+werkzeug
+PyPDF2
+docx2txt
+PyMuPDF
+python-dotenv

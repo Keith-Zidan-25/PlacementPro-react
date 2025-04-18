@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            box-sizing: border-box;
+            width: 100%;
+            font-family: 'Trebuchet MS';
+        }
+        .container {
+            width: 100%;
+            padding: 10px;
+            padding-left: 25px;
+        }
+        tr {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12pt;
+        }
+        .title-line {
+            font-size: 12pt;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+            padding-bottom: 6px;
+        }
+        .body-text{
+            font-size: 11pt;
+        }
+        .body-title {
+            display: flex;
+            justify-content: space-between;
+        }
+        .body-title > div {
+            width: 20rem;
+        }
+        .body-title div {
+            font-family: Tahoma;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+        .body-title .date {
+            align-self: flex-end;
+        }
+        .flex-group{
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+        .flex-group > div {
+            margin-top: 5px;
+            width: 9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <% if (name || contact) { %>
+                <tr style="border-bottom: 4px solid black">
+                    <% if (name) { %>
+                        <td><div style="font-size: 26pt; font-weight: bold;"><%= name || '' %></div></td>
+                    <% } %>
+                    <% if (contact) { %>
+                        <td class="body-text"><div><p><%= contact.phone || '' %> | <%= contact.email || '' %><% if (contact.website) { %> | <%= contact.website || '' %><% } %> </p></div></td>
+                    <% } %>
+                </tr>
+            <% } %>
+            <% if (summary) { %>
+                <tr>
+                    <td class="title-line"><div>Summary</div></td>
+                    <td class="body-text"><div><p><%= summary || '' %></p></div></td>
+                </tr>
+            <% } %>
+            <% if (workExperience) { %>
+                <tr>
+                    <td class="title-line"><div>Experience</div></td>
+                    <td class="body-text">
+                        <% workExperience.forEach(experience => { %>
+                            <div>
+                                <div class="body-title"><div style="margin-right: 25px;"><%= experience.title || '' %></div><div class="date"><%= experience.date || '' %></div></div>
+                                <ul class="list-group">
+                                    <% experience.desc.forEach(line => { %>  
+                                        <li><%= line || '' %></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                        <% }) %>
+                    </td>
+                </tr>
+            <% } %>
+            <% if (projects) { %>
+                <tr>
+                    <td class="title-line"><div>Projects</div></td>
+                    <td class="body-text">
+                        <% projects.forEach(project => { %>
+                            <div>
+                                <div class="body-title"><div style="margin-right: 25px;"><%= project.title || '' %></div><div class="date"><%= project.date || '' %></div></div>
+                                <ul class="list-group">
+                                    <% project.desc.forEach(line => { %>
+                                        <li><%= line || '' %></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                        <% }) %>
+                    </td>
+                </tr>
+            <% } %>
+            <% if (skills) { %>
+                <tr>
+                    <td class="title-line"><div>Skills</div></td>
+                    <td class="body-text">
+                        <div class="flex-group">
+                            <% skills.forEach(skill => { %>
+                                <div><%= skill || '' %></div>
+                            <% }) %>
+                        </div>
+                    </td>
+                </tr>
+            <% } %>
+            <% if (education) { %>
+                <tr>
+                    <td class="title-line"><div>Education</div></td>
+                    <td class="body-text">
+                        <% education.forEach(qualification => { %>
+                            <div>
+                                <div class="body-title"><div style="margin-right: 25px;"><%= qualification.title || '' %></div><div class="date"><%= qualification.date || '' %></div></div>
+                            </div>
+                        <% }) %>
+                    </td>
+                </tr>
+            <% } %>
+            <% if (achievements) { %>
+                <tr>
+                    <td class="title-line"><div>Achievements</div></td>
+                    <td class="body-text">
+                        <ul class="list-group">
+                            <% achievements.forEach(achievement => { %>
+                                <li><%= achievement || '' %></li>
+                            <% }) %>
+                        </ul>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+</body>
+</html>
