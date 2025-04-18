@@ -51,7 +51,7 @@ export default function Profile() {
                 <header className="py-2 w-full top-0 z-10 bg-purple-700">
                     <Navbar linkList={linkList} className={'text-white'}/>
                 </header>
-                <div className="flex bg-white">
+                <div className="flex bg-purle-900">
                     <Sidebar setComponent={setComponent} userData={userData}/>
                     <main className="p-10 bg-white flex-1 ml-64">
                         {component || <Overview userData={userData.user} />} 

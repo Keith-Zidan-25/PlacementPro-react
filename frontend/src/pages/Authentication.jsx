@@ -2,10 +2,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { z, ZodError } from "zod";
 import React, { useState } from "react";
-import p2 from '../assets/images/p1.png';
 import { useNavigate } from "react-router-dom";
 import * as Components from '../components/Components';
 import LoadingScreen from "../components/LoadingScreen";
+
+import p2 from '../assets/images/home_page/p1.png';
+import verifyPagePic from '../assets/images/verification_page.jpg';
 
 axios.defaults.withCredentials = true;
 
@@ -218,16 +220,21 @@ export default function App() {
                         )}
 
                         {verify && (
-                            <Components.Container>
-                                <Components.Form onSubmit={handleVerification}>
-                                    <Components.Title>OTP Verification</Components.Title>
-                                    <Components.Input type="text" name="code" placeholder="Enter OTP" />
-                                    {errors.code && <span className="text-red-500 text-sm">{errors.code}</span>}
+                            <div className="min-h-screen w-screen p-2 flex items-center justify-center">
+                                <div className="w-1/2 min-h-50 border-r-2 border-purple-700">
+                                    <Components.Form onSubmit={handleVerification}>
+                                        <Components.Title>OTP Verification</Components.Title>
+                                        <Components.Input type="text" name="code" placeholder="Enter OTP" />
+                                        {errors.code && <span className="text-red-500 text-sm">{errors.code}</span>}
 
-                                    <Components.Anchor href="#">Resend OTP</Components.Anchor>
-                                    <Components.Button type="submit">Verify</Components.Button>
-                                </Components.Form>
-                            </Components.Container>
+                                        <Components.Anchor href="#">Resend OTP</Components.Anchor>
+                                        <Components.Button type="submit">Verify</Components.Button>
+                                    </Components.Form>
+                                </div>
+                                <div className="flex-1">
+                                    <img src={verifyPagePic}/>
+                                </div>
+                            </div>
                         )}
                     
                 </div>

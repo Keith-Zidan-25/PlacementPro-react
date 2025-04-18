@@ -1,0 +1,17 @@
+from flask_cors import CORS
+from flask_session import Session
+from flask import Flask
+from flask_routes.resumeRouter import resume_bp
+
+app = Flask(__name__)
+
+# Session(app)
+CORS(app)
+# CORS(app, origins=['http://localhost:5173', 'http://localhost:3020'])
+
+app.secret_key = 'placement_predictor_secret_key'  # Required for flash messages and sessions
+
+app.register_blueprint(resume_bp, url_prefix='/api/resume')
+
+if __name__ == '__main__':
+    app.run(debug=True)

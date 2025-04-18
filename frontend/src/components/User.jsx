@@ -7,6 +7,12 @@ import { useEffect, useState } from "react";
 // import axios from "axios";
 // import { redirect } from "react-router-dom";
 
+import make from '../assets/images/resume/make.jpg';
+import analyse from '../assets/images/resume/analyse.jpg';
+import mlClassic from '../assets/images/courses/ml-classic.png';
+import aiClassic from '../assets/images/courses/ai-classic.png';
+import dSciClassic from '../assets/images/courses/data-sci-classic.jpg';
+
 export function Overview({ userData }) {
     const data = [
         {
@@ -42,10 +48,9 @@ export function Overview({ userData }) {
 export function Settings({ userData }) {
     return(
         <>
-            <h1 className="text-black">Settings</h1>
             <div className="flex gap-3">
                 <input type="search" name="settingSearch" placeholder="Search" />
-                <button type="submit" className="rounded-full border-black">Search</button>
+                <button type="submit" className="rounded-full border-black"><Search /></button>
             </div>
         </>
     );
@@ -53,26 +58,25 @@ export function Settings({ userData }) {
 
 export function Courses({ userData }) {
     const courses = [
-        { name: "Machine Learning", imgPath: '', desc: '', link: '' },
-        { name: "Artificial Intelligence", imgPath: '', desc: '', link: '' },
-        { name: "Data Analytics", imgPath: '', desc: '', link: '' }
+        { name: "Machine Learning", imgPath: mlClassic, desc: '', link: '' },
+        { name: "Artificial Intelligence", imgPath: aiClassic, desc: '', link: '' },
+        { name: "Data Analytics", imgPath: dSciClassic, desc: '', link: '' }
     ]
 
-    const newCourse = () => {
-        try {
+    // const newCourse = () => {
+    //     try {
             
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
     return (
         <>
-            <h1 className="text-black">Courses</h1>
             <div className="flex gap-3">
                 <Input type="search" name="courseSearch" placeholder="Search" />
                 <button type="submit" className="rounded-full border-black"><Search /></button>
-                <button onClick={newCourse} className="rounded-full border-black"><Plus /></button>
+                {/* <button onClick={newCourse} className="rounded-full border-black"><Plus /></button> */}
             </div>
             <div className="border-top border-purple=700 border-x-1 w-full flex gap-2">
                 {courses.map((course, index) => (
@@ -88,7 +92,6 @@ export function Courses({ userData }) {
 export function Results({ userData }) {
     return (
         <>
-            <h1 className="text-black">Results</h1>
             <div className="flex gap-3">
                 <Input type="search" name="resultSearch" placeholder="Search" />
                 <button type="submit" className="rounded-full border-black"><Search /></button>
@@ -149,7 +152,13 @@ export function Resumes({ userData }) {
                 )}
 
             </div> */}
-            <button><a href={`/resume`}>MAKE RESUME</a></button>
+            {/* <button><a href={`/resume`}>MAKE RESUME</a></button> */}
+            <div className="grid grid-cols-2">
+                <Card key={'1'} linkPath={'/resume/create'} buttonMsg={'Create Resume'} imagePath={make} 
+                    desc={'Use Our Free Resume generator with Live Preview to create your Resumes. Choose from our collection of Templates!!'} title={'Resume Generator'}/>
+                <Card key={'2'} linkPath={'/resume/analyse'} buttonMsg={'Analyse Resume'} imagePath={analyse} 
+                    desc={'Use Our Free Resume Analyser to know how good your resume is!!'} title={'Resume Analyser'}/>
+            </div>
         </>
     );
 }

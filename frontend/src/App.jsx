@@ -20,7 +20,7 @@ function App() {
                     <Route path="/login-register" element={<Authentication />} />
                     <Route path="/user/profile/:username" element={<Profile />} />
                     <Route path="/courses" element={<Course />} />
-                    <Route path="/resume" element={<ResumeHome />} />
+                    <Route path="/resume/:type" element={<ResumeHome />} />
                     <Route path="/aptitude-tests" element={<Home />} />
                     <Route path="/create-resume/:title" element={<ResumeBuilder />}/>
                 </Routes>
