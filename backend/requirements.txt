@@ -11,3 +11,6 @@ PyPDF2
 docx2txt
 PyMuPDF
 python-dotenv
+nltk
+scikit-learn
+sentence_transformers
