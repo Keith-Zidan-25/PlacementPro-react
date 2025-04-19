@@ -7,7 +7,7 @@ from flask_routes.quizRouter import quiz_bp
 app = Flask(__name__)
 
 # Session(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 # CORS(app, origins=['http://localhost:5173', 'http://localhost:3020'])
 
 app.secret_key = 'placement_predictor_secret_key'  # Required for flash messages and sessions

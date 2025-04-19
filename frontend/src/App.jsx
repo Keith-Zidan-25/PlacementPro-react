@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Result from "./pages/Result";
 
 const Home = lazy(() => import('./pages/Home'));
 const Authentication = lazy(() => import('./pages/Authentication'));
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/resume/:type" element={<ResumeHome />} />
                     <Route path="/aptitude-tests" element={<Home />} />
                     <Route path="/create-resume/:title" element={<ResumeBuilder />}/>
+                    <Route path="/result/:type/:ID" element={<Result />}/>
                 </Routes>
             </Suspense>
         </BrowserRouter>

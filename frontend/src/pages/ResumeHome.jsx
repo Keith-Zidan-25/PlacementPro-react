@@ -3,10 +3,11 @@ import { Search } from "lucide-react";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Components from "../components/Components";
 
 import resumePic from '../assets/images/resume_analysis_page.jpg';
+import Swal from "sweetalert2";
 
 axios.defaults.withCredentials = true;
 
@@ -16,11 +17,44 @@ export default function ResumeHome() {
     const [ analyseFlag, setAnalyseFlag ] = useState(false);
     const [ errors, setErrors ] = useState({});
 
+    const navigate = useNavigate();
+
     let { type } = useParams();
 
     const handleAnalysis = async (event) => {
         event.preventDefault();
-        console.log('File Uploaded')
+        setLoading(true);
+
+        const formdata = new FormData();
+        formdata.append('file', event.target.file.files[0]);
+
+        try{
+            const response = await axios.post('http://localhost:5000/api/resume/upload-resume', formdata, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (response.data.success) {
+                Swal.fire('Success', 'Resume Successfully uploaded. Analysis Started', 'success')
+                    .then(() => {
+                        const fileId = response.data.file_id;
+                        navigate(`/result/resume-analysis/${fileId}`);
+                    })
+                    .catch();
+            } else {
+                if (response.status === 500) {
+                    Swal.fire('Server Error', 'An unknown server error occured', 'error');
+                } else {
+                    const message = response.data.msg;
+                    Swal.fire('Error', message, 'error');
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
     };
     
     useEffect(() => {
