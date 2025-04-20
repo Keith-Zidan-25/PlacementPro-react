@@ -8,6 +8,7 @@ import * as Components from "../components/Components";
 
 import resumePic from '../assets/images/resume_analysis_page.jpg';
 import Swal from "sweetalert2";
+import Navbar from "../components/Navbar";
 
 axios.defaults.withCredentials = true;
 
@@ -18,6 +19,11 @@ export default function ResumeHome() {
     const [ errors, setErrors ] = useState({});
 
     const navigate = useNavigate();
+    const linkList = [
+        { name: "Home", url: "/" },
+        { name: "Profile", url: "" },
+        { name: "Contact", url: "#contact" }
+    ];
 
     let { type } = useParams();
 
@@ -108,13 +114,16 @@ export default function ResumeHome() {
             )}
             {!analyseFlag && (
                 <>
-                    <div className="flex gap-3 bg-purple-500">
+                    <header className="py-2 w-full top-0 z-10 bg-purple-700">
+                        <Navbar linkList={linkList} className={'text-white'}/>
+                    </header>
+                    <div className="flex gap-3 p-2 mt-2">
                         <Components.Input type="search" name="resultSearch" placeholder="Search" />
                         <button type="submit" className="rounded-full border-black"><Search /></button>
                     </div>
-                    <div>
+                    <div className="grid grid-cols-5 p-2 mt-2">
                         { resumes.map((resume, index) => (
-                            <Card key={index} imagePath={resume.IMAGE_Path} desc={resume.TEMPLATE_DESC} buttonMsg={'create'} title={resume.TITLE}
+                            <Card key={index} imagePath={'/resume-templates' + resume.IMAGE_PATH} desc={resume.TEMPLATE_DESC} buttonMsg={'create'} title={resume.TITLE}
                                 linkPath={`/create-resume/${resume.TITLE}`}/>
                         ))}
                     </div>

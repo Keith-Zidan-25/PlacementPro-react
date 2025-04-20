@@ -69,6 +69,6 @@ def analyze_by_id(file_id):
     except Exception as e:
         return jsonify({ 'success': False, 'msg': str(e) }), 500
     
-    finally:
-        if os.path.exists(filepath):
-            os.remove(filepath)
+    # finally:
+    #     if os.path.exists(filepath):
+    #         os.remove(filepath)

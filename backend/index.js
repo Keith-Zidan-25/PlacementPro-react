@@ -34,7 +34,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/file', fileRouter);
 app.use('/api/quiz', quizRouter)
 app.use('/user', userRouter);
-app.use('/course', courseRouter);
+app.use('/api/courses', courseRouter);
 
 app.listen(PORT, () => {
     console.log(`Server Listening on http://localhost:${PORT}`)

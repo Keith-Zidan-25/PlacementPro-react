@@ -12,6 +12,7 @@ import analyse from '../assets/images/resume/analyse.jpg';
 import mlClassic from '../assets/images/courses/ml-classic.png';
 import aiClassic from '../assets/images/courses/ai-classic.png';
 import dSciClassic from '../assets/images/courses/data-sci-classic.jpg';
+import osClassic from '../assets/images/courses/os-classic.png';
 
 export function Overview({ userData }) {
     const data = [
@@ -58,9 +59,10 @@ export function Settings({ userData }) {
 
 export function Courses({ userData }) {
     const courses = [
-        { name: "Machine Learning", imgPath: mlClassic, desc: '', link: '' },
-        { name: "Artificial Intelligence", imgPath: aiClassic, desc: '', link: '' },
-        { name: "Data Analytics", imgPath: dSciClassic, desc: '', link: '' }
+        { name: "Machine Learning", imgPath: mlClassic, desc: '', link: '/courses/ML' },
+        { name: "Artificial Intelligence", imgPath: aiClassic, desc: '', link: '/courses/AI' },
+        { name: "Data Analytics", imgPath: dSciClassic, desc: '', link: '/courses/DA' },
+        { name: "Operating Systems", imgPath: osClassic, desc: '', link: '/courses/OS' }
     ]
 
     // const newCourse = () => {
