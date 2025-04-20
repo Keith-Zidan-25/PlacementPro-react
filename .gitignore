@@ -9,5 +9,6 @@ old_pages
 #backend stuff
 backend/node_modules
 backend/sessions
+backend/temp
 #unused files
 script.txt

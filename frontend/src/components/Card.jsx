@@ -9,9 +9,17 @@ export default function Card({ className, title, desc, imagePath, buttonMsg, lin
                 </div>
             )}
             {(title || desc) && (
-                <div className="p-4 flex flex-col gap-2">
+                <div className="p-4 flex flex-col gap-2 w-full">
                     <h3 className="text-lg font-semibold text-black">{title}</h3>
-                    <p className="text-gray-500 text-sm">{desc}</p>
+                    {Array.isArray(desc) ? (
+                        <ul className="list-disc list-inside text-gray-800 space-y-1">
+                            {desc.map((item, index) => (
+                                <li key={index}>{item.replaceAll('*', '')}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-700">{desc}</p>
+                    )}
                     {(buttonMsg || linkPath) && (
                         <a href={linkPath} className="px-6 py-3 bg-purple-700 text-white rounded-full text-lg transition hover:bg-purple-900 animate-zoom-in w-fit">
                             {buttonMsg}
