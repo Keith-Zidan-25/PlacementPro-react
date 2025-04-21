@@ -33,7 +33,7 @@ Occurs when two or more processes are waiting indefinitely for resources held by
 
 
 ### Semaphore Code Example:
-```
+```c
 #include <semaphore.h>
 #include <pthread.h>
 

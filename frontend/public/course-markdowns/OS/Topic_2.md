@@ -37,7 +37,7 @@ The OS enables multiple programs to run seemingly at the same time by switching 
 ![Types of Process](/course-markdowns/OS/images/process_diagram.png)
 
 ## Code Simulation (fork example):
-```
+```c
 #include <stdio.h>
 #include <unistd.h>
 
