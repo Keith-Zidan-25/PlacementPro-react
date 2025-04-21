@@ -15,7 +15,7 @@ Memory Management is crucial for program execution. The OS keeps track of each b
 * A page table maps logical pages to physical frames
 
 #### Example:
-![Paging](/course-markdown/OS/images/paging.png)
+![Paging](/course-markdowns/OS/images/paging.png)
 > This allows non-contiguous memory allocation and reduces fragmentation.
 
 ### Segmentation:
@@ -28,7 +28,7 @@ Memory Management is crucial for program execution. The OS keeps track of each b
 * Enables running large programs even with limited RAM
 
 ### Example:
-```
+```c
 int main() {
     int *a = malloc(1000000 * sizeof(int));
     // Dynamically allocated memory managed by OS

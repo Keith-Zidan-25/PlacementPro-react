@@ -65,20 +65,11 @@ export function Courses({ userData }) {
         { name: "Operating Systems", imgPath: osClassic, desc: '', link: '/courses/OS' }
     ]
 
-    // const newCourse = () => {
-    //     try {
-            
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
     return (
         <>
             <div className="flex gap-3">
                 <Input type="search" name="courseSearch" placeholder="Search" />
                 <button type="submit" className="rounded-full border-black"><Search /></button>
-                {/* <button onClick={newCourse} className="rounded-full border-black"><Plus /></button> */}
             </div>
             <div className="border-top border-purple=700 border-x-1 w-full flex gap-2">
                 {courses.map((course, index) => (

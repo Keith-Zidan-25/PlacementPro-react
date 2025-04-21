@@ -13,6 +13,7 @@
     "apexcharts": "^4.5.0",
     "axios": "^1.8.3",
     "lucide-react": "^0.475.0",
+    "mermaid": "^11.6.0",
     "react": "^19.0.0",
     "react-activity-calendar": "^2.7.10",
     "react-apexcharts": "^1.7.0",

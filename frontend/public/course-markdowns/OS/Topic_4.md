@@ -27,7 +27,7 @@ A file system defines how data is stored, organized, and retrieved from storage 
 
 
 ### Bash Commands:
-```
+```bash
 # Create a file
 touch demo.txt
 
