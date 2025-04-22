@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import ChartCard from "../components/ChartCard";
 import Card from "../components/Card";
 
+import LoadingScreen from "../components/LoadingScreen";
+
 axios.defaults.withCredentials = true;
 
 export default function Result() {
