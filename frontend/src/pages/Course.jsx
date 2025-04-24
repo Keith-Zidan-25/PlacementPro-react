@@ -14,7 +14,10 @@ export default function Course() {
     const {courseCode} = useParams();
 
     const [loading, setLoading] = useState(false);
-    const [modules, setModules] = useState([{}]);
+    const [modules, setModules] = useState({
+        courseModules: [],
+        title: ''
+    });
     const [currentModule, setCurrentModule] = useState('Topic_1');
     const [step, setStepCounter] = useState(0);
     const [markdownContent, setMarkDownContent] = useState("");
@@ -25,11 +28,12 @@ export default function Course() {
         const fetchCourseDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:3020/api/courses/modules/${courseCode}`);
+                const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/courses/modules/${courseCode}`);
                 if (response.data.success) {
+                    console.log(response);
                     const data = response.data['data'];
                     setModules(data);
-                    setCurrentModule(data[0].MODULE_FILE);
+                    setCurrentModule(data.courseModules[0].moduleFile);
                 }
             } catch(err) {
                 console.error(err);
@@ -52,8 +56,8 @@ export default function Course() {
 
     const getNextModule = () => {
         const nextStep = step + 1;
-        if (nextStep < modules.length) {
-            setCurrentModule(modules[nextStep].MODULE_FILE);
+        if (nextStep < modules?.courseModules.length) {
+            setCurrentModule(modules.courseModules[nextStep].moduleFile);
             setStepCounter(nextStep);
         }
     };
@@ -71,14 +75,14 @@ export default function Course() {
             </header>
             <div className="flex">
                 <aside className="w-64 min-h-screen bg-white border-r border-purple-700/20 p-2">
-                    <div className="text-semibold">{modules[0].COURSE_TITLE}:</div>
-                    {modules.map((item, index) => (
+                    <div className="text-semibold">{modules.title}:</div>
+                    {modules?.courseModules.map((item, index) => (
                         <button
                             key={index}
-                            onClick={() => setCurrentModule(() => item.MODULE_FILE)}
+                            onClick={() => setCurrentModule(() => item.moduleFile)}
                             className="flex items-center space-x-3 w-full px-4 py-4 text-left hover:bg-gray-500/20 rounded-lg transition"
                         >
-                            <span>{item.MODULE_TITLE}</span>
+                            <span>{item.title}</span>
                         </button>
                     ))}
                 </aside>

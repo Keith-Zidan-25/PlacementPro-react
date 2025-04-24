@@ -1,7 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const argon2 = require('argon2');
-const db = require('../../Queries/UserQuery');
+const db = require('../../Queries/userQueries');
 
 const authRouter = express.Router();
 const transporter = nodemailer.createTransport({
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 authRouter.post('/signup', async (req, res) => {
     const { username, password, email } = req.body;
     try {
-        const existingUser = await db.checkIfEmailExists(email);
+        const existingUser = await db.default.checkIfEmailExists(email);
 
         if (existingUser) {
             return res.status(400).json({ error: 'Email is already in use' });
@@ -55,15 +55,15 @@ authRouter.post('/signup', async (req, res) => {
 authRouter.post('/signin', async (req, res) => {
     const { username, password } = req.body;
     try {
-        const userData = await db.getUserData(username);
+        const userData = await db.default.getUserData(username);
 
         if (!userData) {
             return res.status(404).json({ error: 'User Not Found' });
         }
-        const flag = await argon2.verify(userData.PASSWORD, password);
+        const flag = await argon2.verify(userData.password, password);
         
         if (flag) {
-            req.session.user = userData.USERKEY;
+            req.session.user = userData.userkey;
             req.session.username = username;
             req.session.save((err) => {
                 if (err) {
@@ -84,15 +84,14 @@ authRouter.post('/signin', async (req, res) => {
 
 authRouter.post('/verify', async (req, res) => {
     const { code } = req.body;
-    console.log(code, "Type: ", typeof code)
-    console.log(req.session.CODE, "Type: ", typeof req.session.CODE);
+    
     try {
         if (req.session.CODE === parseInt(code)) {
             const { username, email, password } = req.session.userData;
-            await db.insertNewUserData(username, password, email);
+            await db.default.insertNewUserData(username, password, email);
     
-            const userKey = await db.getUserKey(username);
-            req.session.user = userKey.USERKEY;
+            const userKey = await db.default.getUserKey(username);
+            req.session.user = userKey.userkey;
             req.session.username = username;
     
             delete req.session.userData;

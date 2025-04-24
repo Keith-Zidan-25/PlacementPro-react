@@ -35,7 +35,7 @@ export default function ResumeHome() {
         formdata.append('file', event.target.file.files[0]);
 
         try{
-            const response = await axios.post('http://localhost:5000/api/resume/upload-resume', formdata, {
+            const response = await axios.post(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/upload-resume`, formdata, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
@@ -66,7 +66,7 @@ export default function ResumeHome() {
     useEffect(() => {
         const fetchResumes = async () => {
             try {
-                const response = await axios.get('http://localhost:3020/api/file/resumes');
+                const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resumes`);
 
                 if (response.status !== 200) {
                     setErrors({code: response.status, errMsg: response.data.errorMsg});

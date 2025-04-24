@@ -1,5 +1,5 @@
 const express = require('express');
-const quizdb = require('../../Queries/QuizQuery');
+const quizdb = require('../../Queries/quizQueries');
 const quizRouter = express.Router();
 
 quizRouter.get('/user-answers/:quizkey', async (req, res) => {

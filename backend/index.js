@@ -3,14 +3,27 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const FileStorage = require('session-file-store')(session);
+const { connectDB } = require('./mongoose');
+
 require('dotenv').config()
+connectDB()
 
 const app = express();
 const PORT = process.env.NODE_PORT;
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            'https://p1sjwjx5-5173.inc1.devtunnels.ms',
+            'http://localhost:5173'
+        ];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }))
 app.use(session({
@@ -18,7 +31,11 @@ app.use(session({
     secret: process.env.SECRET_KEY,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 3600000 }
+    cookie: { 
+        maxAge: 3600000,
+        sameSite: 'none',
+        secure: true
+    }
 }));
 app.use((req, res, next) => {
     next();

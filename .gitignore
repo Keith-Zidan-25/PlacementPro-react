@@ -12,3 +12,4 @@ backend/sessions
 backend/temp
 #unused files
 script.txt
+data.js

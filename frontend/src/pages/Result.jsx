@@ -28,7 +28,7 @@ export default function Result() {
         const fetchResumeAnalysis = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:5000/api/resume/analyze-resume/${ID}`);
+                const response = await axios.get(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/analyze-resume/${ID}`);
 
                 if (response.data.success) {
                     const data = response.data['data'];

@@ -17,7 +17,7 @@ export default function ResumeBuilder() {
     useEffect(() => {
         const fetchPreview = async () => {
             try {
-                const res = await axios.post('http://localhost:3020/api/file/resume/preview-resume', {
+                const res = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resume/preview-resume`, {
                     template: templateKey,
                     data: formData,
                 });
@@ -30,7 +30,7 @@ export default function ResumeBuilder() {
     }, [formData]);
   
     const handleDownload = async () => {
-        const res = await axios.post('http://localhost:3020/api/file/resume/generate-resume', {
+        const res = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resume/generate-resume`, {
             template: templateKey,
             data: formData
         }, { responseType: 'blob' });
