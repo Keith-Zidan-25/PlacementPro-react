@@ -33,11 +33,12 @@ app.use(session({
     resave: false,
     cookie: { 
         maxAge: 3600000,
-        sameSite: 'none',
-        secure: true
+        // sameSite: 'none',
+        // secure: true
     }
 }));
 app.use((req, res, next) => {
+    console.log(req.session);
     next();
 });
 

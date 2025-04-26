@@ -14,6 +14,8 @@ import p10 from "../assets/images/home_page/p10.jpg";
 import p11 from "../assets/images/home_page/p11.jpg";
 import p12 from "../assets/images/home_page/p12.jpg";
 
+import { Twitter, Instagram, Phone, Mail } from "lucide-react";
+
 export default function Home() {
     const linkList = [
         { name: "Home", url: "#Home" },
@@ -73,7 +75,7 @@ export default function Home() {
                         competitive job market.
                     </p>
                 </div>
-                <div className="container-custom flex justify-center gap-8 flex-wrap">
+                <div className=" flex justify-center gap-8 flex-wrap">
                     <Card imagePath={p3} title="Core Engineering Subjects" buttonMsg="Learn More" linkPath="#"
                         desc="Deep dive into fundamental engineering concepts with our expert-led courses."
                     />
@@ -93,7 +95,7 @@ export default function Home() {
                         Read testimonials from students who have benefited from our training programs.
                     </p>
                 </div>
-                <div className="container-custom flex justify-center gap-8 flex-wrap">
+                <div className=" flex justify-center gap-8 flex-wrap">
                     <Card imagePath={p10} title="John Doe" className={"animate-fade-up"}
                         desc="PlacementPro's courses were exactly what I needed to land my dream job."
                     />
@@ -127,14 +129,14 @@ export default function Home() {
                 </div>
                 <div className="container-custom flex justify-center items-center gap-12 flex-wrap">
                     {[
-                        { icon: "fas fa-phone-alt", title: "Phone", text: "+1 234 567 890" },
-                        { icon: "fas fa-envelope", title: "Email", text: "info@placementpro.com" },
-                        { icon: "fas fa-instagram", title: "Instagram", text: "@placementpro" },
-                        { icon: "fas fa-twitter", title: "Twitter", text: "@placementpro" },
+                        { icon: <Phone />, title: "Phone", text: "+1 234 567 890" },
+                        { icon: <Mail />, title: "Email", text: "info@placementpro.com" },
+                        { icon: <Instagram />, title: "Instagram", text: "@placementpro" },
+                        { icon: <Twitter />, title: "Twitter", text: "@placementpro" },
                     ].map((item, index) => (
-                        <div key={index} className="bg-gray-100 rounded-lg p-5 max-w-xs text-center shadow-md transition hover:bg-gray-200">
-                            <i className={item.icon}></i>
-                            <h3>{item.title}</h3>
+                        <div key={index} className="flex flex-col bg-gray-100 rounded-lg p-5 max-w-xs text-center items-center justify-center shadow-md transition hover:bg-gray-200">
+                            {item.icon}
+                            {/* <h3>{item.title}</h3> */}
                             <p>{item.text}</p>
                         </div>
                     ))}

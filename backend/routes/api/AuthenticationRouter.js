@@ -72,6 +72,8 @@ authRouter.post('/signin', async (req, res) => {
                 }
             });
 
+            console.log(req.session.user)
+
             res.status(200).json({ redirect: `/user/profile/${username}` });
         } else {
             res.status(401).json({ error: 'Invalid username or password' });

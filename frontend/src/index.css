@@ -17,7 +17,7 @@
     .container-custom {
         @apply w-11/12 max-w-7xl mx-auto px-4;
     }
-
+    
     @keyframes fadeInUp {
         from {
             opacity: 0;

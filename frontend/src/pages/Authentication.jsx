@@ -34,6 +34,7 @@ export default function App() {
     const navigate = useNavigate();
 
     const handleSignUp = async (event) => {
+        console.log('Sign Up Triggered...')
         event.preventDefault();
         setLoading(true);
 
@@ -73,6 +74,7 @@ export default function App() {
     };
 
     const handleSignIn = async (event) => {
+        console.log('Sign In Triggered...')
         event.preventDefault();
         setLoading(true);
 
@@ -124,7 +126,7 @@ export default function App() {
     
             const response = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/auth/verify`, codeData);
     
-            if (response.status === 200) {
+            if (response.status === 201) {
                 Swal.fire(response.data.success, 'Welcome to PlacementPro!!', 'success')
                     .then(() => {
                         navigate(response.data.redirect);

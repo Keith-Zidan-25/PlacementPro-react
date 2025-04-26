@@ -1,171 +1,128 @@
-import styled from 'styled-components';
+// Converted React + TailwindCSS version of your styled-components setup
 
-export const Container = styled.div`
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    position: relative;
-    overflow: hidden;
-    width: 678px;
-    max-width: 100%;
-    min-height: 400px;
-`;
+export const Container = ({ children }) => (
+    <div className="bg-white rounded-[10px] shadow-[0_14px_28px_rgba(0,0,0,0.25),_0_10px_10px_rgba(0,0,0,0.22)] relative overflow-hidden w-[678px] max-w-full min-h-[400px]">
+      {children}
+    </div>
+  );
+  
+  export const SignUpContainer = ({ children, signinIn }) => (
+    <div
+      className={`absolute top-0 h-full w-1/2 opacity-0 z-[1] transition-all duration-500 ease-in-out
+        ${!signinIn ? 'translate-x-full opacity-100 z-[5]' : ''}`}
+    >
+      {children}
+    </div>
+  );
+  
+  export const SignInContainer = ({ children, signinIn }) => (
+    <div
+      className={`absolute top-0 h-full w-1/2 z-[2] transition-all duration-500 ease-in-out
+        ${!signinIn ? 'translate-x-full' : ''}`}
+    >
+      {children}
+    </div>
+  );
+  
+  export const Form = ({ children, ...props }) => (
+    <form {...props} className="bg-white flex flex-col items-center justify-center px-[50px] h-full">
+      {children}
+    </form>
+  );
 
- export const SignUpContainer = styled.div`
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
-    ${props => props.signinIn !== true ? `
-        transform: translateX(100%);
-        opacity: 1;
-        z-index: 5;
-    ` 
-    : null}
-`; 
+  export const Label = ({ children, ...props }) => (
+    <label {...props} className="flex flex-col justify-start text-md font-light leading-5 tracking-wide my-5">
+        {children}
+    </label>
+  );
+  
+  export const Title = ({ children }) => (
+    <h1 className="font-bold m-0">{children}</h1>
+  );
 
-export const SignInContainer = styled.div`
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
-    left: 0;
-    width: 50%;
-    z-index: 2;
-    ${props => (props.signinIn !== true ? `transform: translateX(100%);` : null)}
-`;
- 
-export const Form = styled.form`
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
-`;
- 
-export const Title = styled.h1`
-    font-weight: bold;
-    margin: 0;
-`;
- 
-export const Input = styled.input`
-    background-color: #fff;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 8px 10px;
-    margin: 8px 0;
-    width: 100%;
-    text-align: left;
-`;
-
-export const TextArea = styled.textarea`
-    background-color: #fff;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 8px 10px;
-    margin: 8px 0;
-    width: 100%;
-    text-align: left;
-`;
-
-export const Button = styled.button`
-    border-radius: 20px;
-    border: 1px solid rgb(126, 34, 206);
-    background-color:rgb(126, 34, 206);
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
-    &:active{
-        transform: scale(0.95);
-    }
-    &:focus {
-        outline: none;
-    }
-`;
-
-export const GhostButton = styled(Button)`
-    background-color: transparent;
-    border-color: #ffffff;
-`;
- 
-export const Anchor = styled.a`
-    color: #333;
-    font-size: 14px;
-    text-decoration: none;
-    margin: 15px 0;
-`;
-
-export const OverlayContainer = styled.div`
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: 100;
-    ${props =>
-    props.signinIn !== true ? `transform: translateX(-100%);` : null}
-`;
-
-export const Overlay = styled.div`
-    background: rgb(160, 64, 200);
-    background: -webkit-linear-gradient(to right, rgb(126, 34, 206), rgb(160, 64, 200));
-    background: linear-gradient(to right, rgb(126, 34, 206), rgb(160, 64, 200));
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    color: #ffffff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-    ${props => (props.signinIn !== true ? `transform: translateX(50%);` : null)}
-`;
- 
-export const OverlayPanel = styled.div`
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    text-align: center;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-`;
-
-export const LeftOverlayPanel = styled(OverlayPanel)`
-   transform: translateX(-20%);
-   ${props => props.signinIn !== true ? `transform: translateX(0);` : null}
-`;
-
-export const RightOverlayPanel = styled(OverlayPanel)`
-    right: 0;
-    transform: translateX(0);
-    ${props => props.signinIn !== true ? `transform: translateX(20%);` : null}
-`;
-
-export const Paragraph = styled.p`
-    font-size: 14px;
-    font-weight: 100;
-    line-height: 20px;
-    letter-spacing: 0.5px;
-    margin: 20px 0 30px
-`;
+  export const RadialSelectInput = ({ id, value, name }) => (
+    <label htmlFor={id} className="flex items-center gap-1">
+      <input type="radio" id={id} value={value} name={name} className="accent-purple-700" />
+      {value}
+    </label>
+  );  
+  
+  export const Input = (props) => (
+    <input
+      {...props}
+      className="bg-white border border-slate-200 rounded-[3px] py-2 px-3 my-2 w-full text-left"
+    />
+  );
+  
+  export const TextArea = (props) => (
+    <textarea
+      {...props}
+      className="bg-white border border-slate-200 rounded-[3px] py-2 px-3 my-2 w-full text-left"
+    />
+  );
+  
+  export const Button = ({ children, ...props }) => (
+    <button
+      {...props}
+      className="rounded-[20px] border border-purple-700 bg-purple-700 text-white text-xs font-bold py-3 px-11 tracking-wider uppercase transition-transform duration-75 active:scale-95 focus:outline-none"
+    >
+      {children}
+    </button>
+  );
+  
+  export const GhostButton = ({ children, ...props }) => (
+    <Button {...props} className="bg-transparent border-white text-white">
+      {children}
+    </Button>
+  );
+  
+  export const Anchor = ({ children, ...props }) => (
+    <a {...props} className="text-gray-800 text-sm no-underline my-4">
+      {children}
+    </a>
+  );
+  
+  export const OverlayContainer = ({ children, signinIn }) => (
+    <div
+      className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-transform duration-500 ease-in-out z-[100]
+        ${!signinIn ? '-translate-x-full' : ''}`}
+    >
+      {children}
+    </div>
+  );
+  
+  export const Overlay = ({ children, signinIn }) => (
+    <div
+      className={`bg-gradient-to-r from-purple-700 to-purple-500 bg-no-repeat bg-cover bg-left text-white relative -left-full h-full w-[200%] transition-transform duration-500 ease-in-out
+        ${!signinIn ? 'translate-x-1/2' : ''}`}
+    >
+      {children}
+    </div>
+  );
+  
+  export const OverlayPanel = ({ children, className = '' }) => (
+    <div
+      className={`absolute flex items-center justify-center flex-col px-10 text-center top-0 h-full w-1/2 transform transition-transform duration-500 ease-in-out ${className}`}
+    >
+      {children}
+    </div>
+  );
+  
+  export const LeftOverlayPanel = ({ children, signinIn }) => (
+    <OverlayPanel className={`${!signinIn ? 'translate-x-0' : '-translate-x-1/5'}`}>
+      {children}
+    </OverlayPanel>
+  );
+  
+  export const RightOverlayPanel = ({ children, signinIn }) => (
+    <OverlayPanel className={`right-0 ${!signinIn ? 'translate-x-1/5' : 'translate-x-0'}`}>
+      {children}
+    </OverlayPanel>
+  );
+  
+  export const Paragraph = ({ children }) => (
+    <p className="text-sm font-light leading-5 tracking-wide my-5">
+      {children}
+    </p>
+  );
+  

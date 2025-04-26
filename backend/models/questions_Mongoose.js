@@ -15,10 +15,10 @@ export const questions_Mongoose = new Schema({
     "quizKey": Number,
     "questionKey": Number,
     "question": String,
-    "optionA": String,
-    "optionB": String,
-    "optionC": String,
-    "optionD": String,
+    "A": String,
+    "B": String,
+    "C": String,
+    "D": String,
     "answer": String,
 }, { collection: "questions" })
 

@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Result from "./pages/Result";
 
 const Home = lazy(() => import('./pages/Home'));
 const Authentication = lazy(() => import('./pages/Authentication'));
@@ -9,6 +8,8 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Course = lazy(() => import('./pages/Course'));
 const ResumeHome = lazy(() => import('./pages/ResumeHome'));
 const ResumeBuilder = lazy(() => import("./pages/ResumeBuilder"));
+const Result = lazy(() => import('./pages/Result'));
+const ErrorPage = lazy(() => import('./pages/Error'));
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/aptitude-tests" element={<Home />} />
                     <Route path="/create-resume/:title" element={<ResumeBuilder />}/>
                     <Route path="/result/:type/:ID" element={<Result />}/>
+                    <Route path="/error/:errorCode" element={<ErrorPage />} />
                 </Routes>
             </Suspense>
         </BrowserRouter>

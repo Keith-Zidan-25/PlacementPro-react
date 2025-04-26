@@ -45,7 +45,8 @@ class UserQueries {
             personalDetails: [],
             userBadges: []
         });
-        return await newUser.save();
+        await newUser.save()
+        return { success: true };
     }
     
     async awardUserBadge(userkey, badgeKey) {
@@ -65,11 +66,21 @@ class UserQueries {
         return !!user;
     }
     
-    async updatePersonalDetails(userkey, details) {
-        return await users_Mongoose.updateOne(
-            { userkey },
-            { $set: { personalDetails: [details] } }
-        );
+    async upsertPersonalDetails(userkey, newDetails) {
+        const user = await users_Mongoose.findOne({ userkey });
+    
+        if (!user) {
+            return { success: false, msg: "user not found"};
+        }
+    
+        if (user.personalDetails.length > 0) {
+            user.personalDetails[0] = newDetails;
+        } else {
+            user.personalDetails.push(newDetails);
+        }
+    
+        await user.save();
+        return { success: true };
     }
 }
 

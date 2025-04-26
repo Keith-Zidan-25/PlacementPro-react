@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import LoadingScreen from "../components/LoadingScreen";
 import Sidebar from "../components/Sidebar";
 import { Overview } from "../components/User";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -15,14 +15,18 @@ export default function Profile() {
 
     let { username } = useParams();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true);
             try {
                 const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/user/profile/${username}`);
 
-                if (response.status === 200) {
+                if (response.status === 201) {
                     setUserData(response.data);
+                } else {
+                    navigate(`/error/${response.status}`);
                 }
             } catch (err) {
                 console.error(err);

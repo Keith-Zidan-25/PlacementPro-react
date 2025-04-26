@@ -16,8 +16,6 @@ const badgesSchema = new Schema({
     "badgeTitle": String,
     "imageUrl": String,
     "badgeDesc": String,
-    "requiredQuizzes": Number,
-    "requiredScore": Number,
 }, { collection: "badges" })
 
 export default mongoose.models.badges || model('badges', badgesSchema)
