@@ -10,7 +10,7 @@ CURRENT_DIR = os.getcwd()
 MISTRAL_API_KEY = os.getenv('MISTRAL_API_KEY')
 MISTRAL_API_URL = os.getenv('MISTRAL_API_URL')
 
-os.makedirs(CURRENT_DIR + '/temp', exist_ok=True)
+os.makedirs(CURRENT_DIR + '/tmp', exist_ok=True)
 
 @resume_bp.route('/upload-resume', methods=['POST'])
 def upload_resume():
@@ -25,7 +25,7 @@ def upload_resume():
         try:
             file_id = str(uuid.uuid4())
             filename = f"{file_id}.pdf"
-            filepath = os.path.join(CURRENT_DIR, 'temp', filename)
+            filepath = os.path.join(CURRENT_DIR, 'tmp', filename)
             file.save(filepath)
 
             return jsonify({ 'success': True, 'file_id': file_id }), 200
@@ -36,7 +36,7 @@ def upload_resume():
 def analyze_by_id(file_id):
     try:
         filename = f"{file_id}.pdf"
-        filepath = os.path.join(CURRENT_DIR, 'temp', filename)
+        filepath = os.path.join(CURRENT_DIR, 'tmp', filename)
         if not os.path.exists(filepath):
             return jsonify({ 'success': False, 'msg': 'File not found' }), 404
 
@@ -69,6 +69,6 @@ def analyze_by_id(file_id):
     except Exception as e:
         return jsonify({ 'success': False, 'msg': str(e) }), 500
     
-    # finally:
-    #     if os.path.exists(filepath):
-    #         os.remove(filepath)
+    finally:
+        if os.path.exists(filepath):
+            os.remove(filepath)

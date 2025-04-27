@@ -123,8 +123,8 @@ export default function ResumeHome() {
                     </div>
                     <div className="grid grid-cols-5 p-2 mt-2">
                         { resumes.map((resume, index) => (
-                            <Card key={index} imagePath={'/resume-templates' + resume.IMAGE_PATH} desc={resume.TEMPLATE_DESC} buttonMsg={'create'} title={resume.TITLE}
-                                linkPath={`/create-resume/${resume.TITLE}`}/>
+                            <Card key={index} imagePath={'/resume-templates' + resume.imagePath} desc={resume.templateName} buttonMsg={'create'} title={resume.title}
+                                linkPath={`/create-resume/${resume.title}`}/>
                         ))}
                     </div>
                 </>

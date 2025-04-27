@@ -13,7 +13,6 @@ const model = mongoose.model;
 
 export const questions_Mongoose = new Schema({
     "quizKey": Number,
-    "questionKey": Number,
     "question": String,
     "A": String,
     "B": String,

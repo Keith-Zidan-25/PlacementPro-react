@@ -10,6 +10,7 @@ const ResumeHome = lazy(() => import('./pages/ResumeHome'));
 const ResumeBuilder = lazy(() => import("./pages/ResumeBuilder"));
 const Result = lazy(() => import('./pages/Result'));
 const ErrorPage = lazy(() => import('./pages/Error'));
+const Quiz = lazy(() => import('./pages/Quiz'));
 
 function App() {
     return (
@@ -23,7 +24,7 @@ function App() {
                     <Route path="/user/profile/:username" element={<Profile />} />
                     <Route path="/courses/:courseCode" element={<Course />} />
                     <Route path="/resume/:type" element={<ResumeHome />} />
-                    <Route path="/aptitude-tests" element={<Home />} />
+                    <Route path="/aptitude-tests/:quizKey" element={<Quiz />} />
                     <Route path="/create-resume/:title" element={<ResumeBuilder />}/>
                     <Route path="/result/:type/:ID" element={<Result />}/>
                     <Route path="/error/:errorCode" element={<ErrorPage />} />

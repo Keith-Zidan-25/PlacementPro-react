@@ -32,7 +32,6 @@ class QuizQueries {
                 {
                     $project: {
                         _id: 0,
-                        questionKey: 1,
                         question: 1,
                         optionA: 1,
                         optionB: 1,
@@ -45,7 +44,6 @@ class QuizQueries {
             return questions;
         } catch (err) {
             console.error("Error fetching quiz questions:", err);
-            throw err;
         }
     }
 
@@ -70,7 +68,7 @@ class QuizQueries {
     async insertQuizResults(userKey, quizKey, score, userAnswers) {
         return await solvedQuizzes_Mongoose.findOneAndUpdate(
             { userKey, quizKey },
-            { $set: { score, wrongAnswerList: userAnswers, dateOfSol: new Date() } },
+            { $set: { score, dateOfSol: new Date() } },
             { upsert: true, new: true }
         );
     }

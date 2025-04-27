@@ -35,12 +35,16 @@ fileRouter.post('/resume/generate-resume', async (req, res) => {
     const templatePath = path.join(TEMPLATE_DIR, template);
     try {
         const html = await ejs.renderFile(templatePath, data);
-        const browser = await puppeteer.launch();
-
+        const browser = await puppeteer.launch({
+            headless: 'new',
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        
         const page = await browser.newPage();
-        await page.setContent(html, { waitUntil: 'networkidle0' });
-
-        const pdfBuffer = await page.pdf({ format: 'A4' });
+        await page.setContent(html);
+        await page.waitForTimeout(1000);
+        
+        const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
         await browser.close();
 
         res.setHeader('Content-Type', 'application/pdf');

@@ -9,7 +9,8 @@ old_pages
 #backend stuff
 backend/node_modules
 backend/sessions
-backend/temp
+backend/tmp
+backend/addQuizQuestions.js
 #unused files
 script.txt
 data.js

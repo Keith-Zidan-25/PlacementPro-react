@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-const FileStorage = require('session-file-store')(session);
+const MongoStore = require('connect-mongo');
 const { connectDB } = require('./mongoose');
 
 require('dotenv').config()
@@ -27,18 +27,21 @@ app.use(cors({
     credentials: true
 }))
 app.use(session({
-    store: new FileStorage({ path: './sessions' }),
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        collectionName: 'sessions',
+        ttl: 3600,
+    }),
     secret: process.env.SECRET_KEY,
     saveUninitialized: false,
     resave: false,
     cookie: { 
-        maxAge: 3600000,
+        maxAge: 3600,
         // sameSite: 'none',
         // secure: true
     }
 }));
 app.use((req, res, next) => {
-    console.log(req.session);
     next();
 });
 
