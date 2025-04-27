@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import ResumeForm from '../components/ResumeForm';
 import { templateRegistry, templateEmptyFormRegistry } from '../utils/TemplateResgistry';
 import { useParams } from 'react-router-dom';
 import { Button } from '../components/Components';
 
+import axios from 'axios';
+import { useSendRequest } from '../utils/axiosInstance';
+
 export default function ResumeBuilder() {
-    let { title } = useParams()
+    let { title } = useParams();
+    const { sendRequest } = useSendRequest();
 
     const emptyForm = templateEmptyFormRegistry[title + '.ejs'];
 
@@ -17,11 +20,22 @@ export default function ResumeBuilder() {
     useEffect(() => {
         const fetchPreview = async () => {
             try {
-                const res = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resume/preview-resume`, {
-                    template: templateKey,
-                    data: formData,
+                const response = await sendRequest({
+                    method: 'POST',
+                    url: '/api/file/resume/preview-resume',
+                    data: {
+                        template: templateKey,
+                        data: formData
+                    }
                 });
-                setPreviewHtml(res.data);
+                if (response) {
+                    setPreviewHtml(response);
+                }
+                // const res = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resume/preview-resume`, {
+                //     template: templateKey,
+                //     data: formData,
+                // });
+                // setPreviewHtml(res.data);
             } catch (err) {
                 console.error('Preview Error:', err);
             }

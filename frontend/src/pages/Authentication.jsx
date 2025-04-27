@@ -1,4 +1,3 @@
-import axios from "axios";
 import Swal from "sweetalert2";
 import { z, ZodError } from "zod";
 import React, { useState } from "react";
@@ -9,7 +8,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import p2 from '../assets/images/home_page/p1.png';
 import verifyPagePic from '../assets/images/verification_page.jpg';
 
-axios.defaults.withCredentials = true;
+import { useSendRequest } from "../utils/axiosInstance";
 
 const signUpSchema = z.object({
     username: z.string().min(1, "Username can't be empty"),
@@ -31,7 +30,10 @@ export default function App() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [verify, setVerifyStatus] = useState(false);
+
     const navigate = useNavigate();
+    const { sendRequest } = useSendRequest()
+
 
     const handleSignUp = async (event) => {
         console.log('Sign Up Triggered...')
@@ -49,16 +51,21 @@ export default function App() {
             signUpSchema.parse(data);
             setErrors({});
 
-            const response = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/auth/signup`, data);
+            const response = await sendRequest(
+                {
+                    method: 'POST',
+                    url: '/api/auth/signup',
+                    data: data
+                },
+                { redirectOnErrorCodes: [507]}
+            );
 
-            if (response.status === 200) {
+            if (response && response.success) {
                 setLoading(false);
-                Swal.fire(response.data.success, 'The verification code is sent to your Email', 'success');
-
+                Swal.fire(response.msg, 'The verification code is sent to your Email', 'success');
                 setVerifyStatus(true);
             }
         } catch (err) {
-
             if (err instanceof z.ZodError) {
                 const formattedErrors = {};
                 err.errors.forEach((e) => {
@@ -67,6 +74,7 @@ export default function App() {
                 setErrors(formattedErrors);
             } else {
                 console.error("Error:", err);
+                navigate('error/500', { replace: true });
             }
         } finally {
             setLoading(false);
@@ -88,16 +96,19 @@ export default function App() {
             signInSchema.parse(data);
             setErrors({});
 
-            const response = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/auth/signin`, data);
+            const response = await sendRequest(
+                {
+                    method: 'POST',
+                    url: '/api/auth/signin',
+                    data: data
+                },
+                { redirectOnErrorCodes: [403, 507] }
+            );
 
-            if (response.status === 200) {
-                navigate(response.data.redirect);
-            } else {
-                setLoading(false);
-                Swal.fire('Some Error Occurred', response.data.error, 'error');
+            if (response && response.success) {
+                navigate(response.redirect);
             }
         } catch (err) {
-
             if (err instanceof z.ZodError) {
                 const formattedErrors = {};
                 err.errors.forEach((e) => {
@@ -106,6 +117,7 @@ export default function App() {
                 setErrors(formattedErrors);
             } else {
                 console.error("Error:", err);
+                navigate('error/500', { replace: true });
             }
         } finally {
             setLoading(false);
@@ -123,18 +135,19 @@ export default function App() {
         try {
             codeSchema.parse(codeData);
             setErrors({});
+
+            const response = await sendRequest({
+                method: 'POST',
+                url: '/api/auth/verfiy',
+                data: codeData
+            });
     
-            const response = await axios.post(`${import.meta.env.VITE_NODE_SERVER_URL}/api/auth/verify`, codeData);
-    
-            if (response.status === 201) {
-                Swal.fire(response.data.success, 'Welcome to PlacementPro!!', 'success')
+            if (response && response.success) {
+                Swal.fire(response.msg, 'Welcome to PlacementPro!!', 'success')
                     .then(() => {
-                        navigate(response.data.redirect);
+                        navigate(response.redirect);
                     })
                     .catch(() => setLoading(false));
-            } else {
-                setLoading(false);
-                Swal.fire('An Error Occured', response.data.error, 'error');
             }
         } catch (err) {
             if (err instanceof ZodError) {
@@ -144,7 +157,8 @@ export default function App() {
                 });
                 setErrors(formattedErrors);
             } else {
-                console.error("Error", err);
+                console.error(err);
+                navigate('error/500', { replace: true });
             }
         } finally {
             setLoading(false);

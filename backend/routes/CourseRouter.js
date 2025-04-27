@@ -11,7 +11,7 @@ courseRouter.get('/modules/:courseCode', async (req, res) => {
         res.status(200).json({ data: courseData, success: true });
     } catch(err) {
         console.error(err)
-        res.status(500).json({success: false, msg: 'Unknown server error'});
+        res.status(500).json({success: false, error: 'Unknown server error'});
     }
 });
 

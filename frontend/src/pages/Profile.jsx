@@ -4,9 +4,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import Sidebar from "../components/Sidebar";
 import { Overview } from "../components/User";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
+import { useSendRequest } from "../utils/axiosInstance";
 
 export default function Profile() {
     const [ userData, setUserData ] = useState({});
@@ -16,19 +14,24 @@ export default function Profile() {
     let { username } = useParams();
 
     const navigate = useNavigate();
+    const { sendRequest } = useSendRequest();
 
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/user/profile/${username}`);
-
-                if (response.status === 201) {
-                    setUserData(response.data);
-                } else {
-                    navigate(`/error/${response.status}`);
+                const response = await sendRequest(
+                    {
+                        method: 'GET',
+                        url: `/user/profile/${username}`
+                    },
+                    { redirectOnErrorCodes: [403, 500] }
+                )
+                if (response && response.success) {
+                    setUserData(response.user);
                 }
             } catch (err) {
+                navigate('error/500', { replace: true });
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -58,7 +61,7 @@ export default function Profile() {
                 <div className="flex bg-purle-900">
                     <Sidebar setComponent={setComponent} userData={userData}/>
                     <main className="p-10 bg-white flex-1 ml-64">
-                        {component || <Overview userData={userData.user} />} 
+                        {component || <Overview userData={userData} />} 
                     </main>
                 </div>
             </div>

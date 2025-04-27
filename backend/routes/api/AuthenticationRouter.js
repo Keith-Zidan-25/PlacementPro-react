@@ -15,10 +15,11 @@ const transporter = nodemailer.createTransport({
 authRouter.post('/signup', async (req, res) => {
     const { username, password, email } = req.body;
     try {
+        console.log('Signin API called....')
         const existingUser = await db.default.checkIfEmailExists(email);
 
         if (existingUser) {
-            return res.status(400).json({ error: 'Email is already in use' });
+            return res.status(400).json({ success: false, error: 'Email is already in use' });
         }
 
         const hashedPassword = await argon2.hash(password);
@@ -33,7 +34,7 @@ authRouter.post('/signup', async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);
-                return res.status(400).json({error: 'Failed to Send Verification Code'});
+                return res.status(400).json({ success: false, error: 'Failed to Send Verification Code'});
             }
         });
 
@@ -42,23 +43,25 @@ authRouter.post('/signup', async (req, res) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.status(500).json({ error: 'Session not saved' });
+                return res.status(507).json({ error: 'Session not saved' });
             }
-            res.status(200).json({ success: 'OTP sent', redirect: '/verify' });
+            console.log('OTP Sent...')
+            res.status(200).json({ success: true, msg: 'OTP Sent' });
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Some Error Occurred' });
+        res.status(500).json({ success: false, error: 'Some Error Occurred' });
     }
 });
 
 authRouter.post('/signin', async (req, res) => {
     const { username, password } = req.body;
     try {
+        console.log('Signin API called.....')
         const userData = await db.default.getUserData(username);
 
         if (!userData) {
-            return res.status(404).json({ error: 'User Not Found' });
+            return res.status(404).json({ success: false, error: 'User Not Found' });
         }
         const flag = await argon2.verify(userData.password, password);
         
@@ -68,19 +71,19 @@ authRouter.post('/signin', async (req, res) => {
             req.session.save((err) => {
                 if (err) {
                     console.error('Session save error:', err);
-                    return res.status(500).json({ error: 'Session not saved' });
+                    return res.status(507).json({ success: false, error: 'Session not saved' });
                 }
             });
 
             console.log(req.session.user)
 
-            res.status(200).json({ redirect: `/user/profile/${username}` });
+            res.status(200).json({ success: true, redirect: `/user/profile/${username}` });
         } else {
-            res.status(401).json({ error: 'Invalid username or password' });
+            res.status(401).json({ success: false, error: 'Invalid username or password' });
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Some Error Occurred' });
+        res.status(500).json({ success: false, error: 'Some Error Occurred' });
     }
 });
 
@@ -99,13 +102,13 @@ authRouter.post('/verify', async (req, res) => {
             delete req.session.userData;
             delete req.session.CODE;
     
-            res.status(200).json({ success: 'Registration Successful', redirect: `/user/profile/${username}`});
+            res.status(200).json({ success: true, msg: 'Registration Successful', redirect: `/user/profile/${username}`});
         } else {
-            res.status(400).json({ error: 'Incorrect OTP, please try again' });
+            res.status(400).json({ success: false, error: 'Incorrect OTP, please try again' });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Some Error has Occured' });
+        res.status(500).json({ success: false, error: 'Some Error has Occured' });
     }
 });
 
@@ -125,18 +128,18 @@ authRouter.post('/resend-code', async (req, res) => {
     req.session.save((err) => {
         if (err) {
             console.error('Session save error:', err);
-            return res.status(500).json({ error: 'Session not saved' });
+            return res.status(507).json({ success: false, error: 'Session not saved' });
         }
     });
 
     if (req.session.resendAttempts >= 3) {
-        return res.status(400).json({ error: 'OTP resend limit exceeded. Please try again later.' });
+        return res.status(400).json({ success: false, error: 'OTP resend limit exceeded. Please try again later.' });
     }
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return res.status(500).json({ error: 'Failed to resend OTP' });
+            return res.status(500).json({ success: false, error: 'Failed to resend OTP' });
         }
-        res.status(200).json({ success: 'New OTP sent to your email' });
+        res.status(200).json({ success: true, msg: 'New OTP sent to your email' });
     });
 });
 
@@ -144,7 +147,7 @@ authRouter.get('/signout', async (req, res) => {
     req.session.destroy(() => {
         if (err) console.log(err);
     });
-    res.status(200).json({ redirect: '/' });
+    res.status(200).json({ success: true, redirect: '/' });
 });
 
 module.exports = authRouter

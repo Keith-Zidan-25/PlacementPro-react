@@ -10,10 +10,10 @@ const TEMPLATE_DIR = './resumes/templates';
 fileRouter.get('/resumes', async (req, res) => {
     try {
         const resumes = await dbFile.default.getResumeTemplates();
-        res.status(200).json({ resumes: resumes});
+        res.status(200).json({ success: true, resumes: resumes});
     } catch (error) {
         console.error(error);
-        res.status(500).json({ errMsg: 'Unknown server error'});
+        res.status(500).json({ success: false, error: 'Unknown server error'});
     }
 });
 
@@ -26,7 +26,7 @@ fileRouter.post('/resume/preview-resume', async (req, res) => {
         res.send(html);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Rendering error' });    
+        res.status(500).json({ success: false, error: 'Rendering error' });    
     }
 });
 
@@ -50,7 +50,7 @@ fileRouter.post('/resume/generate-resume', async (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.send(pdfBuffer);
     } catch (err) {
-        res.status(500).json({ error: 'PDF Error', details: err.message });
+        res.status(500).json({ success: false, error: 'PDF Error', details: err.message });
     }
 });
 

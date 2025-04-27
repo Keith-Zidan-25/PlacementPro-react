@@ -10,15 +10,15 @@ userRouter.get('/profile/:username', async (req, res) => {
     console.log(`cookie data: ${req.session.user}`);
 
     if (!req.session.user || req.session.user !== userKey) {    
-        return res.status(403).json({error: 'Unauthorized access' });
+        return res.status(403).json({success: false, error: 'Unauthorized access' });
     }
 
     try {
         const userData = await dbUser.default.getUserData(username);
-        res.status(201).json({ user: userData });
+        res.status(201).json({ success: true, user: userData });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Some Error Occurred' });
+        res.status(500).json({ success: false, error: 'Some Error Occurred' });
     }
 });
 
@@ -27,18 +27,18 @@ userRouter.post('/user-details', async (req, res) => {
 
     try {
         if (!req.session.user) {
-            return res.status(403).json({error: 'Unauthorized access' });
+            return res.status(403).json({success: false, error: 'Unauthorized access' });
         } 
         const userkey = req.session.user;
         const result = await dbUser.default.upsertPersonalDetails(userkey, data);
 
         if (!result.success) {
-            return res.status(404).json({ success: false, msg: result.msg });
+            return res.status(404).json({ success: false, error: result.msg });
         }
         res.status(201).json({ success: true, msg: "User Details Updated" });
     } catch (err) {
         console.error(err);
-        res.status(500).json({success: false, msg: "unknown server error"});
+        res.status(500).json({success: false, error: "unknown server error"});
     }
 });
 

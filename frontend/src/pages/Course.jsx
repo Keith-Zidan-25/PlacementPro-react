@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
-import LoadingScreen from "../components/LoadingScreen";
-import axios from "axios";
-import { Button } from "../components/Components";
+
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
+import { useSendRequest } from "../utils/axiosInstance";
+
 import Navbar from "../components/Navbar";
 import Mermaid from '../components/Mermaid';
+import LoadingScreen from "../components/LoadingScreen";
+import { Button } from "../components/Components";
 
 export default function Course() {
-    const {courseCode} = useParams();
+    const { courseCode } = useParams();
+    const { sendRequest } = useSendRequest();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [modules, setModules] = useState({
@@ -28,15 +32,29 @@ export default function Course() {
         const fetchCourseDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/courses/modules/${courseCode}`);
-                if (response.data.success) {
-                    console.log(response);
-                    const data = response.data['data'];
+                const response = await sendRequest(
+                    {
+                        method: 'GET',
+                        url: `/api/courses/modules/${courseCode}`
+                    },
+                    { redirectOnErrorCodes: [500] }
+                );
+
+                if (response && response.success) {
+                    const data = response.data;
                     setModules(data);
                     setCurrentModule(data.courseModules[0].moduleFile);
                 }
+                // const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/courses/modules/${courseCode}`);
+                // if (response.data.success) {
+                //     console.log(response);
+                //     const data = response.data['data'];
+                //     setModules(data);
+                //     setCurrentModule(data.courseModules[0].moduleFile);
+                // }
             } catch(err) {
                 console.error(err);
+                navigate('error/500', { replace: true });
             } finally {
                 setLoading(false);
             }

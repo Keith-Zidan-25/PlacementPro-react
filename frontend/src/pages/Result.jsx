@@ -1,13 +1,11 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSendRequest } from "../utils/axiosInstance";
 import Swal from "sweetalert2";
+
 import ChartCard from "../components/ChartCard";
 import Card from "../components/Card";
-
 import LoadingScreen from "../components/LoadingScreen";
-
-axios.defaults.withCredentials = true;
 
 export default function Result() {
     const [ loading, setLoading ] = useState(false);
@@ -23,21 +21,35 @@ export default function Result() {
     const [ stateProp, setStateProp ] = useState({});
 
     let { type, ID } = useParams();
+    const { sendRequest } = useSendRequest();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchResumeAnalysis = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/analyze-resume/${ID}`);
+                const response = await sendRequest(
+                    {
+                        method: 'GET',
+                        url: `/api/resume/analyze-resume/${ID}`
+                    },
+                    { server: 'flask', redirectOnErrorCodes: [500] }
+                )
 
-                if (response.data.success) {
-                    const data = response.data['data'];
-                    setResultData(data);
-                } else {
-                    Swal.fire('')
+                if (response && response.success) {
+                    setResultData(response.data);
                 }
+                // const response = await axios.get(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/analyze-resume/${ID}`);
+
+                // if (response.data.success) {
+                //     const data = response.data['data'];
+                //     setResultData(data);
+                // } else {
+                //     Swal.fire('')
+                // }
             } catch(err) {
-                console.error(err)
+                console.error(err);
+                navigate('error/500', { replace: true });
             } finally {
                 setLoading(false);
             }

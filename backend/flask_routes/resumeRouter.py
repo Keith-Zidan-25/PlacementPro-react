@@ -15,11 +15,11 @@ os.makedirs(CURRENT_DIR + '/tmp', exist_ok=True)
 @resume_bp.route('/upload-resume', methods=['POST'])
 def upload_resume():
     if 'file' not in request.files:
-        return jsonify({ 'success': False, 'msg': "No file provided." }), 400
+        return jsonify({ 'success': False, 'error': "No file provided." }), 400
 
     file = request.files['file']
     if file.filename == '':
-        return jsonify({ 'success': False, 'msg': "No selected file." }), 400
+        return jsonify({ 'success': False, 'error': "No selected file." }), 400
 
     if file and allowed_file(file.filename):
         try:
@@ -28,9 +28,9 @@ def upload_resume():
             filepath = os.path.join(CURRENT_DIR, 'tmp', filename)
             file.save(filepath)
 
-            return jsonify({ 'success': True, 'file_id': file_id }), 200
+            return jsonify({ 'success': True, 'msg': 'File Successfully uploaded', 'file_id': file_id }), 200
         except Exception as e:
-            return jsonify({ 'success': False, 'msg': str(e) }), 500
+            return jsonify({ 'success': False, 'error': str(e) }), 500
 
 @resume_bp.route('/analyze-resume/<file_id>', methods=['GET'])
 def analyze_by_id(file_id):
@@ -38,7 +38,7 @@ def analyze_by_id(file_id):
         filename = f"{file_id}.pdf"
         filepath = os.path.join(CURRENT_DIR, 'tmp', filename)
         if not os.path.exists(filepath):
-            return jsonify({ 'success': False, 'msg': 'File not found' }), 404
+            return jsonify({ 'success': False, 'error': 'File not found' }), 404
 
         text = extract_text_from_resume(filepath)
         skills = extract_skills_from_text(text)
@@ -46,7 +46,7 @@ def analyze_by_id(file_id):
         result = analyze_resume_with_mistral_ai(text, api_key=MISTRAL_API_KEY, api_url=MISTRAL_API_URL)
 
         if result.get('error', False):
-            return jsonify({ 'success': False, 'msg': result.get('message', 'AI error') }), 500
+            return jsonify({ 'success': False, 'error': result.get('message', 'AI error') }), 500
 
         data = {
             "ats_score": result.get("ats_score", 60),
@@ -67,7 +67,7 @@ def analyze_by_id(file_id):
         return jsonify({ 'success': True, 'data': data }), 200
 
     except Exception as e:
-        return jsonify({ 'success': False, 'msg': str(e) }), 500
+        return jsonify({ 'success': False, 'error': str(e) }), 500
     
     finally:
         if os.path.exists(filepath):

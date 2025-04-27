@@ -2,15 +2,14 @@ import LoadingScreen from "../components/LoadingScreen";
 import { Search } from "lucide-react";
 import Card from "../components/Card";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import * as Components from "../components/Components";
+import { useSendRequest } from "../utils/axiosInstance";
 
 import resumePic from '../assets/images/resume_analysis_page.jpg';
 import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
 
-axios.defaults.withCredentials = true;
 
 export default function ResumeHome() {
     const [ loading, setLoading ] = useState(true);
@@ -18,14 +17,15 @@ export default function ResumeHome() {
     const [ analyseFlag, setAnalyseFlag ] = useState(false);
     const [ errors, setErrors ] = useState({});
 
+    let { type } = useParams();
     const navigate = useNavigate();
+    const {sendRequest} = useSendRequest();
+
     const linkList = [
         { name: "Home", url: "/" },
         { name: "Profile", url: "" },
         { name: "Contact", url: "#contact" }
     ];
-
-    let { type } = useParams();
 
     const handleAnalysis = async (event) => {
         event.preventDefault();
@@ -35,29 +35,49 @@ export default function ResumeHome() {
         formdata.append('file', event.target.file.files[0]);
 
         try{
-            const response = await axios.post(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/upload-resume`, formdata, {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-            });
+            const response = await sendRequest(
+                {
+                    method: 'POST',
+                    url: '/api/resume/upload-resume',
+                    data: formdata,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }, { server: 'flask' }
+            )
 
-            if (response.data.success) {
-                Swal.fire('Success', 'Resume Successfully uploaded. Analysis Started', 'success')
+            if (response && response.success) {
+                Swal.fire(response.msg, 'Resume Successfully uploaded. Analysis Started', 'success')
                     .then(() => {
                         const fileId = response.data.file_id;
                         navigate(`/result/resume-analysis/${fileId}`);
                     })
                     .catch();
-            } else {
-                if (response.status === 500) {
-                    Swal.fire('Server Error', 'An unknown server error occured', 'error');
-                } else {
-                    const message = response.data.msg;
-                    Swal.fire('Error', message, 'error');
-                }
             }
+            // const response = await axios.post(`${import.meta.env.VITE_FLASK_SERVER_URL}/api/resume/upload-resume`, formdata, {
+            //     headers: {
+            //       'Content-Type': 'multipart/form-data',
+            //     },
+            // });
+
+            // if (response.data.success) {
+            //     Swal.fire('Success', 'Resume Successfully uploaded. Analysis Started', 'success')
+            //         .then(() => {
+            //             const fileId = response.data.file_id;
+            //             navigate(`/result/resume-analysis/${fileId}`);
+            //         })
+            //         .catch();
+            // } else {
+            //     if (response.status === 500) {
+            //         Swal.fire('Server Error', 'An unknown server error occured', 'error');
+            //     } else {
+            //         const message = response.data.msg;
+            //         Swal.fire('Error', message, 'error');
+            //     }
+            // }
         } catch (err) {
             console.log(err);
+            navigate('error/500', { replace: true });
         } finally {
             setLoading(false);
         }
@@ -66,16 +86,24 @@ export default function ResumeHome() {
     useEffect(() => {
         const fetchResumes = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resumes`);
+                const response = await sendRequest({
+                    method: 'GET',
+                    url: '/api/file/resumes',
+                });
 
-                if (response.status !== 200) {
-                    setErrors({code: response.status, errMsg: response.data.errorMsg});
-                } else {
-                    setResumes(response.data.resumes);
+                if (response && response.success) {
+                    setResumes(response.resumes);
                 }
+                // const response = await axios.get(`${import.meta.env.VITE_NODE_SERVER_URL}/api/file/resumes`);
+
+                // if (response.status !== 200) {
+                //     setErrors({code: response.status, errMsg: response.data.errorMsg});
+                // } else {
+                //     setResumes(response.data.resumes);
+                // }
             } catch (error) {
                 console.log(error);
-                setErrors({ code: 0, errMsg: 'An unknown error occured'})
+                setErrors({ code: 0, error: 'An unknown error occured'})
             } finally {
                 setLoading(false);
             }
@@ -102,7 +130,7 @@ export default function ResumeHome() {
                         <Components.Form onSubmit={handleAnalysis}>
                             <Components.Title>Resume Analyser</Components.Title>
                             <Components.Input type="file" name="file" />
-                            {errors.code && <span className="text-red-500 text-sm">{errors.code}</span>}
+                            {errors?.code && <span className="text-red-500 text-sm">{errors?.error}</span>}
 
                             <Components.Button type="submit">Analyse Resume</Components.Button>
                         </Components.Form>
